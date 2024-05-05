@@ -66,7 +66,7 @@ return (
             </div>
 
             <div className={styles.salary}>
-                Estimated Salary: {minJdSalary ? `${minJdSalary} - ` : null} {maxJdSalary} {salaryCurrencyCode}
+                Estimated Salary: {minJdSalary ? `${minJdSalary}k - ` : null} {maxJdSalary}k {salaryCurrencyCode}
             </div>
 
             <div className={styles.about_company}>
