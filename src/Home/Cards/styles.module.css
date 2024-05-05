@@ -1,0 +1,122 @@
+.cards_conatiner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    .container {
+        max-width: 360px;
+        height: 500px;
+        border-radius: 20px;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 4px 0px;
+        margin: 20px;
+        padding: 20px;
+    
+        .header {
+            display: flex;
+    
+            .logo_container {
+                width: fit-content;
+                margin-right: 8px;
+            }
+    
+            .job_details {
+                .company_name {
+                    color: #8b8b8b;
+                    font-size: 13px;
+                    font-weight: 600;
+                    letter-spacing: 1px;
+                    margin-bottom: 3px;
+                }
+    
+                .job_role {
+                    line-height: 1.5;
+                    font-size: 14px;
+                    color: rgba(0, 0, 0, 0.87);
+                }
+    
+                .location {
+                    font-size: 11px;
+                    font-weight: 600;
+                    margin-top: 5px;
+                }
+            }
+        }
+    
+        .salary {
+            font-size: 14px;
+            font-weight: 400;
+            margin: 8px 0;
+            color: rgb(77, 89, 106);
+            line-height: 1.5;
+        }
+    
+        .about_company {
+            height: 310px;
+    
+            .title {
+                font-size: 16px;
+                font-weight: 500;
+                line-height: 1.5;
+            }
+    
+            .text {
+                color: rgba(0, 0, 0, 0.87);
+                font-size: 14px;
+                white-space: pre-wrap;
+                overflow: hidden;
+                max-height: 260px;
+                mask-image: linear-gradient(rgb(255, 255, 255), rgb(255, 255, 255), rgba(255, 255, 255, 0));
+            }
+    
+            .text[data-lengthy=false] {
+                mask-image: none;
+            }
+    
+            .show_more{
+                text-align: center;
+                margin-bottom: 8px;
+                position: relative;
+                top: -12px;
+                color: #4943da;
+                font-size: 14px;
+                font-weight: 400;
+                cursor: pointer;
+            }
+        }
+    
+        .experience_info {
+            .title {
+                margin-top: 10px;
+                font-size: 13px;
+                font-weight: 600;
+                color: #8b8b8b;
+                margin-bottom: 3px;
+            }
+    
+            .text {
+                font-size: 14px;
+                line-height: 1.5;
+            }
+        }
+    
+        .apply_button_container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+    
+            button {
+                all: unset;
+                border-radius: 8px;
+                background-color: rgb(85, 239, 196);
+                width: 100%;
+                text-align: center;
+                cursor: pointer;
+                font-weight: 500;
+                padding: 12px 18px;
+                margin: 5px 0;
+                font-size: 16px;
+            }
+        }
+    }
+}
