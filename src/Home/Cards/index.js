@@ -16,8 +16,10 @@ const dummy_data = {
     "logoUrl": "https://logo.clearbit.com/dropbox.com"
 }
 
-function Cards({data={}}) {
+function Cards({data={}, setFilters=()=>{}}) {
     const aboutCompanyRef = createRef(null);
+    
+    const cardContainerRef = createRef(null);
 
     const [showMore, setShowMore] = useState(false);
 
@@ -27,8 +29,16 @@ function Cards({data={}}) {
     if (aboutCompanyTextHeight > 240) setShowMore(true)
     }, [aboutCompanyRef]);
 
+    useEffect(() => {
+        const scrollHeight = cardContainerRef.current.scrollHeight;
+        
+        const scrollTop = cardContainerRef.current.scrollTop;
+
+        if (scrollTop / scrollHeight === 1) console.log('first')
+    }, [])
+
 return (
-    <div className={styles.cards_conatiner}>
+    <div className={styles.cards_conatiner} ref={cardContainerRef}>
         {[dummy_data, ...(data?.jdList || [])]?.map((job_data, index) => {
         const {companyName='', logoUrl='', jobRole='', 
             location='', salaryCurrencyCode='', minJdSalary=0, maxJdSalary=0, jobDetailsFromCompany='', minExp=0} = job_data || {};
