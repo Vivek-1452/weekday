@@ -24,10 +24,12 @@ function Home() {
 
     const [showFilters, setShowFilters] = useState(true);
     
+    //custom hook for list jobs
     const {data} = useGetJobs({setIsLoading, offSet});
 
-    const jobs_data = typeof(data) === 'string' ? JSON.parse(data) : data;
+    const jobs_data = typeof data === 'string' ? JSON.parse(data) : data;
 
+    // config file for the data of filters
     const {filters: filterOptions} = getFilters();
 
     if (isLoading) {
@@ -38,9 +40,9 @@ function Home() {
         <>
             <div className={styles.container}>
 
+                {/* Filters Mapping */}
                 {showFilters ? (
                     <div className={styles.filters_container}>
-
                         <span className={styles.details}>
                             Done by: vivekpaidi4519@gmail.com
                         </span>

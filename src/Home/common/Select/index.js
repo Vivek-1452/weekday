@@ -19,6 +19,7 @@ function Select({data={}}) {
 
     const {placeholder, options, label, name} = data || {};
 
+    // handling the selected option
     const handleOptions = (event) => {
         if (filteredOptions?.length > 0) {
         const [label, value] = event.target.dataset.value?.split('::');
@@ -28,6 +29,7 @@ function Select({data={}}) {
         }
     }
 
+    // Filtering the options on search
     const handleChange = (event) => {
         const value = event.target.value;
 
@@ -36,6 +38,7 @@ function Select({data={}}) {
         setFilteredOptions(filtered_options);
     }
 
+    // Handling the option when cleared
     const handleClear = (event) => {
         event.stopPropagation();
 
@@ -43,16 +46,20 @@ function Select({data={}}) {
         setIsOpen(false);
     }
 
+    // setting the filtered options with all options on mounting/updating the options
     useEffect(() => {
         setFilteredOptions(options);
     }, [options])
 
+    // Saving it to the store when an option is selected
     useEffect(() => {
         dispatch(setFilters({name, value: selectedOption?.value}));
     }, [selectedOption])
 
     return (
         <div className={styles.container}>
+
+            {/* lable is only visible if an option is selected */}
             {selectedOption ? (
                 <div className={styles.label}>
                     {label}
@@ -62,6 +69,7 @@ function Select({data={}}) {
             <div className={styles.select_container} onClick={() => setIsOpen(!isOpen)}>
                 <input placeholder={selectedOption ? selectedOption?.label : placeholder} onChange={handleChange} />
 
+                {/* Close icon for clearing selected option */}
                 {selectedOption ? (
                     <span className={styles.clear}>
                         <CloseIcon onClick={handleClear} />

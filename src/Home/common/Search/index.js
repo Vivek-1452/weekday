@@ -10,6 +10,7 @@ function Search({data={}}) {
 
     const {placeholder, label, name} = data || {};
 
+    // While typing saving the value to the store
     const handleChange = (event) => {
         const value = event.target.value;
 
@@ -20,6 +21,7 @@ function Search({data={}}) {
     return (
         <div className={styles.container}>
 
+            {/* lable is only visible if an option is selected */}
             {searchVal ? (
                 <div className={styles.label}>
                     {label}

@@ -18,10 +18,12 @@ function MultiSelect({data={}}) {
 
     const {label, placeholder, options, name} = data || {};
 
+    // handling the selected option
     const handleOptions = (event) => {
         if (filteredOptions?.length > 0) {
             const [label, value] = event.target.dataset.value?.split('::');
     
+            // if an option is already selectedOptions, no further changes will be made on clicking the same option
             if (!selectedOptions?.some((item) => item.value === value)) {
                 setSelectedOptions((prev) => ([...prev, {label, value}]));
             }
@@ -30,6 +32,7 @@ function MultiSelect({data={}}) {
         }
     }
 
+    // Filtering the options on search
     const handleChange = (event) => {
         const value = event.target.value;
 
@@ -38,6 +41,7 @@ function MultiSelect({data={}}) {
         setFilteredOptions(filtered_options);
     }
 
+    // Handling the options when cleared
     const handleClear = (event) => {
         event.stopPropagation();
 
@@ -45,16 +49,19 @@ function MultiSelect({data={}}) {
         setIsOpen(false);
     }
 
+    // Handling each one of the option when cleared
     const handleClearOption = (value) => {
         const options = selectedOptions?.filter((item) => item?.value !== value);
 
         setSelectedOptions(options);
     }
 
+    // setting the filtered options with all options on mounting/updating the options
     useEffect(() => {
         setFilteredOptions(options);
     }, [options])
 
+    // Saving it to the store when an option is selected
     useEffect(() => {
         dispatch(setFilters({name, value: (selectedOptions || [])?.map((option) => option.value)}));
     }, [selectedOptions])
@@ -63,7 +70,8 @@ function MultiSelect({data={}}) {
 
     return (
         <div className={styles.container}>
-            
+
+            {/* lable is only visible if an option is selected */}
             {!isSelectedOptionsEmpty ? (
                 <div className={styles.label}>
                     {label}
@@ -72,10 +80,12 @@ function MultiSelect({data={}}) {
 
             <div className={styles.select_container} onClick={() => setIsOpen(!isOpen)}>
 
+                {/* mapping all the selected options */}
                 {!isSelectedOptionsEmpty ? ( (selectedOptions || [])?.map((option) => (
                     <div className={styles.selected_option_container}>
                         <div className={styles.selected_option}>{option?.label}</div>
                         
+                        {/* each and every selected option can be cleared by this close icon */}
                         <span className={styles.clear_option}>
                             <CloseIcon onClick={(e) => {e.stopPropagation(); handleClearOption(option?.value)}} />
                         </span>
@@ -85,6 +95,7 @@ function MultiSelect({data={}}) {
 
                 <input placeholder={!isSelectedOptionsEmpty ? '' : placeholder} onChange={handleChange} />
 
+                {/* Close icon to clear all the options/values */}
                 {!isSelectedOptionsEmpty ? (
                     <span className={styles.clear}>
                         <CloseIcon onClick={handleClear} />
