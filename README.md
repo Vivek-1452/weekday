@@ -20,5 +20,5 @@
  - If you want to have a quick look at the UI
 
 	```bash
-	https://weekday-beige.vercel.app/
+	[https://weekday-beige.vercel.app/](https://weekday-beige.vercel.app/)
 	```
