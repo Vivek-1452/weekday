@@ -1,28 +1,36 @@
+import { useEffect, useState } from 'react';
 import styles from './styles.module.css'
+import { setFilters } from '../../../store/filterSlice';
+import { useDispatch } from 'react-redux';
 
 function Search({data={}}) {
+    const [searchVal, setSearchVal] = useState(null);
 
-    const {placeholder, options, label} = data || {};
+    const dispacth = useDispatch();
+
+    const {placeholder, label, name} = data || {};
 
     const handleChange = (event) => {
         const value = event.target.value;
 
-        const filtered_options = (options || [])?.filter((option) => option?.companyName?.includes(value));
-
-        // setFilteredOptions(filtered_options); use redux
+        setSearchVal(value);
     }
+
+    useEffect(() => {
+        dispacth(setFilters({name, value: searchVal}));
+    }, [searchVal])
 
     return (
         <div className={styles.container}>
 
-{/* {!isSelectedOptionsEmpty ? (
+            {searchVal ? (
                 <div className={styles.label}>
                     {label}
                 </div>
-            ) : null} */}
+            ) : null}
 
             <div className={styles.select_container}>
-                <input placeholder={placeholder} onChange={handleChange} />
+                <input placeholder={placeholder} onChange={handleChange} value={searchVal} />
             </div>
         </div>
     )

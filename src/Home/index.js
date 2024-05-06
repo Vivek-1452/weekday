@@ -7,6 +7,8 @@ import getFilters from './config/getFilters';
 import MultiSelect from './common/MultiSelect';
 import Search from './common/Search';
 
+import { useSelector } from 'react-redux';
+
 const COMPONENT_MAPPING = {
     multi_select: MultiSelect,
     select: Select,
@@ -14,9 +16,9 @@ const COMPONENT_MAPPING = {
 }
 
 function Home() {
-    const [filters, setFilters] = useState({});
-
     const [isLoading, setIsLoading] = useState(true);
+
+    const filters = useSelector((state) => state.filters);
 
     const {data} = useGetJobs({filters, setIsLoading});
 
@@ -29,7 +31,7 @@ function Home() {
     }
 
     return (
-        <div>
+        <>
             <div className={styles.container}>
                 {filterOptions?.map((filters) => {
                     const {type} = filters || {};
@@ -41,8 +43,8 @@ function Home() {
                 })}
             </div>
 
-            <Cards data={jobs_data} setFilters={setFilters} />
-        </div>
+            <Cards data={jobs_data} />
+        </>
     )
 }
 

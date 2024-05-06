@@ -3,8 +3,8 @@
     flex-wrap: wrap;
     justify-content: space-evenly;
     align-items: center;
-    height: 100dvh;
     overflow: auto;
+    padding-top: 10rem;
 
     .container {
         max-width: 360px;
@@ -55,7 +55,7 @@
         }
     
         .about_company {
-            height: 310px;
+            height: 290px;
     
             .title {
                 font-size: 16px;
@@ -75,17 +75,18 @@
             .text[data-lengthy=false] {
                 mask-image: none;
             }
-    
-            .show_more{
-                text-align: center;
-                margin-bottom: 8px;
-                position: relative;
-                top: -12px;
-                color: #4943da;
-                font-size: 14px;
-                font-weight: 400;
-                cursor: pointer;
-            }
+            
+        }
+
+        .show_more{
+            text-align: center;
+            margin-bottom: 8px;
+            position: relative;
+            top: -12px;
+            color: #4943da;
+            font-size: 14px;
+            font-weight: 400;
+            cursor: pointer;
         }
     
         .experience_info {
@@ -120,10 +121,27 @@
                 margin: 5px 0;
                 font-size: 16px;
             }
+
+            button:hover {
+                background-color: rgb(5, 178, 129);
+                color: #fff;
+                animation: hoverApply 0.4s ease-in;
+            }
         }
     }
 
     .container:hover {
-        transform: scale(1.02);
+        transform: scale(1.02) !important;
+        z-index: -1 !important;
     }
 }
+
+@keyframes hoverApply {
+    0% {
+        background-color: rgb(85, 239, 196);
+    }
+    100% {
+        background-color: rgb(5, 178, 129);
+        color: #fff;
+    }
+} 

@@ -5,6 +5,9 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 import CloseIcon from '@mui/icons-material/Close';
 
+import { useDispatch } from 'react-redux';
+import { setFilters } from '../../../store/filterSlice';
+
 function Select({data={}}) {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -12,7 +15,9 @@ function Select({data={}}) {
 
     const [selectedOption, setSelectedOption] = useState(null);
 
-    const {placeholder, options, label} = data || {};
+    const dispatch = useDispatch();
+
+    const {placeholder, options, label, name} = data || {};
 
     const handleOptions = (event) => {
         if (filteredOptions?.length > 0) {
@@ -42,6 +47,11 @@ function Select({data={}}) {
         setFilteredOptions(options);
     }, [options])
 
+    useEffect(() => {
+        console.log({selectedOption})
+        dispatch(setFilters({name, value: selectedOption?.value}));
+    }, [selectedOption])
+
     return (
         <div className={styles.container}>
             {selectedOption ? (
@@ -65,24 +75,25 @@ function Select({data={}}) {
             </div>
 
         {isOpen ? (
-            <div className={styles.options_container} onClick={handleOptions}>
+            <div className={styles.overlap}>
+                <div className={styles.options_container} onClick={handleOptions}>
+                    {filteredOptions.length > 0 ? (filteredOptions || [])?.map((option) => {
+                                const {label, value} = option || {};
+                            
+                                return (
+                                <div className={styles.option} 
+                                    data-value={`${label}::${value}`} 
+                                    data-selected={selectedOption?.value === value ? 'true' : 'false'}>
+                                        {label}
+                                </div>
+                            )}) : (
+                                <div className={styles.no_data}>
+                                    No Options Found
+                                </div>
+                            )
+                    } 
 
-            {filteredOptions.length > 0 ? (filteredOptions || [])?.map((option) => {
-                        const {label, value} = option || {};
-                    
-                        return (
-                        <div className={styles.option} 
-                            data-value={`${label}::${value}`} 
-                            data-selected={selectedOption?.value === value ? 'true' : 'false'}>
-                                {label}
-                        </div>
-                    )}) : (
-                        <div className={styles.no_data}>
-                            No Options Found
-                        </div>
-                    )
-            } 
-
+                </div>
             </div>
         ) : null}
 

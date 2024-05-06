@@ -5,6 +5,9 @@
     .label {
         font-size: 13px;
         font-weight: 600;
+        height: 0;
+        position: relative;
+        top: -16px;
     }
 
     .select_container {
@@ -16,6 +19,8 @@
         border: 1px solid rgba(0, 0, 0, 0.23);
         padding: 4px;
         font-size: 12px;
+        margin-bottom: 4px;
+        height: 28px;
 
         input {
             all: unset;
@@ -88,11 +93,12 @@
         border-radius: 4px;
         max-height: 200px;
         overflow: auto;
-        z-index: 99;
-        margin-top: 4px;
+        z-index: 999;
         box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;
         font-size: 14px;
         gap: 2px;
+        position: relative;
+        background-color: #fff;
 
         .option {
             padding: 8px 12px;
@@ -112,4 +118,10 @@
             padding: 4px 8px;
         }
     }
+}
+
+.overlap {
+    position: relative;
+    z-index: 999;
+    height: 0;
 }

@@ -1,4 +1,4 @@
-import { createRef, useEffect, useState } from 'react';
+import { createRef, useEffect, useRef, useState } from 'react';
 import styles from './styles.module.css'
 
 const dummy_data = {
@@ -16,30 +16,34 @@ const dummy_data = {
     "logoUrl": "https://logo.clearbit.com/dropbox.com"
 }
 
-function Cards({data={}, setFilters=()=>{}}) {
-    const aboutCompanyRef = createRef(null);
-    
-    const cardContainerRef = createRef(null);
-
-    const [showMore, setShowMore] = useState(false);
+function Cards({data={}}) {
+    const cardContainerRef = useRef(null);
 
     useEffect(() => {
-    const aboutCompanyTextHeight = aboutCompanyRef.current.scrollHeight;
-
-    if (aboutCompanyTextHeight > 240) setShowMore(true)
-    }, [aboutCompanyRef]);
-
-    useEffect(() => {
-        const scrollHeight = cardContainerRef.current.scrollHeight;
+        const handleScroll = () => {
+            const scrollHeight = cardContainerRef.current.scrollHeight;
         
-        const scrollTop = cardContainerRef.current.scrollTop;
+            const scrollTop = cardContainerRef.current.scrollTop;
 
-        if (scrollTop / scrollHeight === 1) console.log('first')
+            if (scrollHeight - scrollTop < 1000) console.log(scrollTop, scrollHeight);
+
+        }
+
+
+        if (cardContainerRef.current) {
+			cardContainerRef.current.addEventListener('scroll', handleScroll);
+		}
+
+		return () => {
+			if (cardContainerRef.current) {
+				cardContainerRef.current.removeEventListener('scroll', handleScroll);
+			}
+		};
     }, [])
 
 return (
     <div className={styles.cards_conatiner} ref={cardContainerRef}>
-        {[dummy_data, ...(data?.jdList || [])]?.map((job_data, index) => {
+        {(data?.jdList || [])?.map((job_data, index) => {
         const {companyName='', logoUrl='', jobRole='', 
             location='', salaryCurrencyCode='', minJdSalary=0, maxJdSalary=0, jobDetailsFromCompany='', minExp=0} = job_data || {};
 
@@ -74,19 +78,14 @@ return (
                     About Comapny
                 </div>
 
-                <div className={styles.text} data-lengthy={showMore ? 'true' : 'false'} ref={aboutCompanyRef}>
+                <div className={styles.text}>
                     {jobDetailsFromCompany}
                 </div>
-
-
-            {showMore ? (
-                    <div className={styles.show_more}>
-                        Show More
-                    </div>
-            ) : null}
-
             </div>
 
+            <div className={styles.show_more}>
+                        Show More
+                    </div>
                 
             <div className={styles.experience_info}>
                 <div className={styles.title}>

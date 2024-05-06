@@ -4,6 +4,8 @@ import styles from './styles.module.css'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 import CloseIcon from '@mui/icons-material/Close';
+import { setFilters } from '../../../store/filterSlice';
+import { useDispatch } from 'react-redux';
 
 function MultiSelect({data={}}) {
     const [isOpen, setIsOpen] = useState(false);
@@ -12,7 +14,9 @@ function MultiSelect({data={}}) {
 
     const [selectedOptions, setSelectedOptions] = useState([]);
 
-    const {label, placeholder, options} = data || {};
+    const dispatch = useDispatch();
+
+    const {label, placeholder, options, name} = data || {};
 
     const handleOptions = (event) => {
         if (filteredOptions?.length > 0) {
@@ -50,6 +54,10 @@ function MultiSelect({data={}}) {
     useEffect(() => {
         setFilteredOptions(options);
     }, [options])
+
+    useEffect(() => {
+        dispatch(setFilters({name, value: (selectedOptions || [])?.map((option) => option.value)}));
+    }, [selectedOptions])
 
     const isSelectedOptionsEmpty = selectedOptions?.length === 0
 
@@ -89,22 +97,24 @@ function MultiSelect({data={}}) {
             </div>
 
         {isOpen ? (
-            <div className={styles.options_container} onClick={handleOptions}>
-                {filteredOptions?.length > 0 ? (filteredOptions || [])?.map((option) => {
-                    const {label, value} = option || {};
+            <div className={styles.overlap}>
+                <div className={styles.options_container} onClick={handleOptions}>
+                    {filteredOptions?.length > 0 ? (filteredOptions || [])?.map((option) => {
+                        const {label, value} = option || {};
 
-                    return (
-                    <div className={styles.option} 
-                        data-value={`${label}::${value}`} 
-                        data-selected={selectedOptions?.some((item) => item.value === value) ? 'true' : 'false'}>
-                            {label}
-                    </div>
-                )}) : (
-                        <div className={styles.no_data}>
-                            No Options Found
+                        return (
+                        <div className={styles.option} 
+                            data-value={`${label}::${value}`} 
+                            data-selected={selectedOptions?.some((item) => item.value === value) ? 'true' : 'false'}>
+                                {label}
                         </div>
-                    )
-                }
+                    )}) : (
+                            <div className={styles.no_data}>
+                                No Options Found
+                            </div>
+                        )
+                    }
+                </div>
             </div>
         ) : null}
 
