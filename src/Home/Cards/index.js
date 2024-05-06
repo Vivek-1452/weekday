@@ -1,28 +1,13 @@
-import { createRef, useEffect, useRef, useState } from 'react';
+import {  useEffect, useState } from 'react';
 import styles from './styles.module.css'
 import { useSelector } from 'react-redux';
 
-const dummy_data = {
-    "jdUid": "cfff35ac-053c-11ef-83d3-06301d0a7178-92010",
-    "jdLink": "https://weekday.works",
-    "jobDetailsFromCompany": "This is a sample job and you must have displayed it to understand that its not just some random lorem ipsum text but something which was manually written. Oh well, if random text is what you were looking for then here it is: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages and now in this assignment This is a sample job and you must have displayed it to understand that its not just some random lorem ipsum text but something which was manually written. Oh well, if random text is what you were looking for then here it is: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages and now in this assignment.",
-    "maxJdSalary": 61,
-    "minJdSalary": null,
-    "salaryCurrencyCode": "USD",
-    "location": "delhi ncr",
-    "minExp": 3,
-    "maxExp": 6,
-    "jobRole": "frontend",
-    "companyName": "Dropbox",
-    "logoUrl": "https://logo.clearbit.com/dropbox.com"
-}
-
 const MAPPING = {
-    search: 'companyName'
+    search: 'companyName',
+    tech_stack: 'jobRole'
 }
 
-function Cards({data={}}) {
-    const cardContainerRef = useRef(null);
+function Cards({setPageLimit=()=>{}, data={}, isLoading=false}) {
 
     const [filteredList, setFilteredList] = useState([]);
 
@@ -33,9 +18,32 @@ function Cards({data={}}) {
 
         if (finalFilters.length > 0) {
             const finalList = (finalFilters || [])?.reduce((acc, [key, value]) => {
-                let res = (acc || [])?.filter((details) => (MAPPING[key] ? details?.[MAPPING[key]] : details?.[key])?.toLowerCase()?.includes(value?.toLowerCase()))
+
+                let res = typeof value === 'object' 
+                            ? (acc || [])?.filter((details) => {
+                                const val = MAPPING[key] ? details?.[MAPPING[key]] : details?.[key];
+                                
+                                return (value?.includes(val))
+                            })
+                            : (acc || [])?.filter((details) => {
+                                const val = MAPPING[key] ? details?.[MAPPING[key]] : details?.[key];
+                                const final_val = typeof val === 'string' ? val?.toLowerCase() : val;
+                                const filtered_val = typeof value === 'string' ? value?.toLowerCase() : value;
+
+
+                                if (key === 'minJdSalary') {
+                                    return final_val >= filtered_val
+                                }
+
+                                if (typeof val === 'string') {
+                                    return final_val?.includes(filtered_val)
+                                }
+                                
+                                return Number(final_val) === Number(filtered_val)
+                            }) 
+
                 return res;
-            }, filteredList);
+            }, data?.jdList);
 
             setFilteredList([...finalList])
         } else {
@@ -44,33 +52,24 @@ function Cards({data={}}) {
     }, [filters])
 
     useEffect(() => {
-        const handleScroll = () => {
-            const scrollHeight = cardContainerRef.current.scrollHeight;
-        
-            const scrollTop = cardContainerRef.current.scrollTop;
-
-            if (scrollHeight - scrollTop < 1000) console.log(scrollTop, scrollHeight);
-
-        }
-
-
-        if (cardContainerRef.current) {
-			cardContainerRef.current.addEventListener('scroll', handleScroll);
-		}
-
-		return () => {
-			if (cardContainerRef.current) {
-				cardContainerRef.current.removeEventListener('scroll', handleScroll);
-			}
-		};
-    }, [])
-
-    useEffect(() => {
         setFilteredList(data?.jdList || [])
     }, [data])
 
+    const handleScroll = () => {
+        if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isLoading) {
+            return;
+        }
+
+        setPageLimit((prev) => prev + 12);
+    };
+    
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [isLoading]);
+
 return (
-    <div className={styles.cards_conatiner} ref={cardContainerRef}>
+    <div className={styles.cards_conatiner}>
         {!!filteredList?.length && (filteredList || [])?.map((job_data, index) => {
         const {companyName='', logoUrl='', jobRole='', 
             location='', salaryCurrencyCode='', minJdSalary=0, maxJdSalary=0, jobDetailsFromCompany='', minExp=0} = job_data || {};
@@ -98,7 +97,7 @@ return (
             </div>
 
             <div className={styles.salary}>
-                Estimated Salary: {minJdSalary ? `${minJdSalary}k - ` : null} {maxJdSalary}k {salaryCurrencyCode}
+                Estimated Salary: {minJdSalary ? `${minJdSalary}K - ` : null} {maxJdSalary}K {salaryCurrencyCode}
             </div>
 
             <div className={styles.about_company}>

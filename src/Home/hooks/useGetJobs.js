@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from "react"
 
-const useGetJobs = ({setIsLoading=()=>{}}) => {
+const useGetJobs = ({setIsLoading=()=>{}, pageLimit=10}) => {
   const [data, setData] = useState({});
 
   const myHeaders = new Headers();
 
   myHeaders.append("Content-Type", "application/json");
 
-  const body = JSON.stringify({limit: 10, offset: 0});
+  const body = JSON.stringify({limit: pageLimit, offset: 0});
   
   const requestOptions = {method: "POST", headers: myHeaders, body};
 
@@ -27,11 +27,11 @@ const useGetJobs = ({setIsLoading=()=>{}}) => {
 
 			return err;
 		}
-  }, [requestOptions])
+  }, [requestOptions, pageLimit])
 
   useEffect(() => {
     getJobDetails()
-  }, [getJobDetails])
+  }, [getJobDetails, pageLimit])
 
   return {data}
 }

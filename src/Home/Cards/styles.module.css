@@ -122,18 +122,7 @@
                 margin: 5px 0;
                 font-size: 16px;
             }
-
-            button:hover {
-                background-color: rgb(5, 178, 129);
-                color: #fff;
-                animation: hoverApply 0.4s ease-in;
-            }
         }
-    }
-
-    .container:hover {
-        transform: scale(1.02) !important;
-        z-index: -1 !important;
     }
 }
 
@@ -148,13 +137,3 @@
         padding-top: 8rem;
     }
 }
-
-@keyframes hoverApply {
-    0% {
-        background-color: rgb(85, 239, 196);
-    }
-    100% {
-        background-color: rgb(5, 178, 129);
-        color: #fff;
-    }
-} 

@@ -16,7 +16,9 @@ const COMPONENT_MAPPING = {
 function Home() {
     const [isLoading, setIsLoading] = useState(true);
 
-    const {data} = useGetJobs({setIsLoading});
+    const [pageLimit, setPageLimit] = useState(12);
+    
+    const {data} = useGetJobs({setIsLoading, pageLimit});
 
     const jobs_data = typeof(data) === 'string' ? JSON.parse(data) : data;
 
@@ -39,7 +41,13 @@ function Home() {
                 })}
             </div>
 
-            <Cards data={jobs_data} />
+            <Cards setPageLimit={setPageLimit} data={jobs_data} isLoading={isLoading} />
+
+            {data?.jdList?.length === 0 ? (
+                <div className={styles.infinite_loader_container}>
+                    <span className={styles.loader}></span>
+                </div>
+            ) : null}
         </>
     )
 }
