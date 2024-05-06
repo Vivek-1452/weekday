@@ -1,5 +1,6 @@
 import { createRef, useEffect, useRef, useState } from 'react';
 import styles from './styles.module.css'
+import { useSelector } from 'react-redux';
 
 const dummy_data = {
     "jdUid": "cfff35ac-053c-11ef-83d3-06301d0a7178-92010",
@@ -16,8 +17,31 @@ const dummy_data = {
     "logoUrl": "https://logo.clearbit.com/dropbox.com"
 }
 
+const MAPPING = {
+    search: 'companyName'
+}
+
 function Cards({data={}}) {
     const cardContainerRef = useRef(null);
+
+    const [filteredList, setFilteredList] = useState([]);
+
+    const {filters} = useSelector((state) => state);
+
+    useEffect(() => {
+        const finalFilters = Object.entries(filters || {})?.filter(([_, value]) => typeof value === 'object' ? value?.length > 0 : value );
+
+        if (finalFilters.length > 0) {
+            const finalList = (finalFilters || [])?.reduce((acc, [key, value]) => {
+                let res = (acc || [])?.filter((details) => (MAPPING[key] ? details?.[MAPPING[key]] : details?.[key])?.toLowerCase()?.includes(value?.toLowerCase()))
+                return res;
+            }, filteredList);
+
+            setFilteredList([...finalList])
+        } else {
+            setFilteredList(data?.jdList || [])
+        }
+    }, [filters])
 
     useEffect(() => {
         const handleScroll = () => {
@@ -41,14 +65,18 @@ function Cards({data={}}) {
 		};
     }, [])
 
+    useEffect(() => {
+        setFilteredList(data?.jdList || [])
+    }, [data])
+
 return (
     <div className={styles.cards_conatiner} ref={cardContainerRef}>
-        {(data?.jdList || [])?.map((job_data, index) => {
+        {!!filteredList?.length && (filteredList || [])?.map((job_data, index) => {
         const {companyName='', logoUrl='', jobRole='', 
             location='', salaryCurrencyCode='', minJdSalary=0, maxJdSalary=0, jobDetailsFromCompany='', minExp=0} = job_data || {};
 
         return (
-        <div className={styles.container} key={index}>
+        <div className={styles.container} key={job_data?.jdUid}>
             <div className={styles.header}>
                 <div className={styles.logo_container}>
                     <img src={logoUrl} width={20} height={20} alt={companyName.charAt(0) || 'NA'} />

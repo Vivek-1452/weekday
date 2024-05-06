@@ -48,7 +48,6 @@ function Select({data={}}) {
     }, [options])
 
     useEffect(() => {
-        console.log({selectedOption})
         dispatch(setFilters({name, value: selectedOption?.value}));
     }, [selectedOption])
 

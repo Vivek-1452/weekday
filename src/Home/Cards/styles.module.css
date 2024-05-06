@@ -8,6 +8,7 @@
 
     .container {
         max-width: 360px;
+        min-width: 300px;
         height: 500px;
         border-radius: 20px;
         box-shadow: rgba(0, 0, 0, 0.25) 0px 1px 4px 0px;
@@ -133,6 +134,18 @@
     .container:hover {
         transform: scale(1.02) !important;
         z-index: -1 !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .cards_conatiner {
+        padding-top: 13rem;
+    }
+}
+
+@media (min-width: 1000px) {
+    .cards_conatiner {
+        padding-top: 8rem;
     }
 }
 

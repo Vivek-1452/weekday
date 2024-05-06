@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './styles.module.css'
 import { setFilters } from '../../../store/filterSlice';
 import { useDispatch } from 'react-redux';
@@ -14,11 +14,8 @@ function Search({data={}}) {
         const value = event.target.value;
 
         setSearchVal(value);
+        dispacth(setFilters({name, value: value}));
     }
-
-    useEffect(() => {
-        dispacth(setFilters({name, value: searchVal}));
-    }, [searchVal])
 
     return (
         <div className={styles.container}>

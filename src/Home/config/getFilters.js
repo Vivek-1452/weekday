@@ -1,7 +1,7 @@
 const getFilters = () => {
     const filters = [
         {
-            name: 'roles',
+            name: 'jobRole',
             type: 'multi_select',
             placeholder: 'Roles',
             label: 'Roles',
@@ -30,7 +30,7 @@ const getFilters = () => {
             ]
         },
         {
-            name: 'experience',
+            name: 'minExp',
             type: 'select',
             placeholder: 'Experience',
             label: 'Experience',
@@ -48,7 +48,7 @@ const getFilters = () => {
             ]
         },
         {
-            name: 'remote',
+            name: 'location',
             type: 'select',
             placeholder: 'Remote',
             label: 'Remote',
@@ -70,7 +70,7 @@ const getFilters = () => {
             options: []
         },
         {
-            name: 'min_base_pay',
+            name: 'minJdSalary',
             type: 'select',
             placeholder: 'Minimum Base Pay Salary',
             label: 'Min Base Pay',
