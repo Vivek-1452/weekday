@@ -1,4 +1,4 @@
-import {  useEffect, useState } from 'react';
+import {  useEffect, useRef, useState } from 'react';
 import styles from './styles.module.css'
 import { useSelector } from 'react-redux';
 
@@ -7,8 +7,7 @@ const MAPPING = {
     tech_stack: 'jobRole'
 }
 
-function Cards({setPageLimit=()=>{}, data={}, isLoading=false}) {
-
+function Cards({setOffset=()=>{}, data={},isLoading=false}) {
     const [filteredList, setFilteredList] = useState([]);
 
     const {filters} = useSelector((state) => state);
@@ -60,7 +59,7 @@ function Cards({setPageLimit=()=>{}, data={}, isLoading=false}) {
             return;
         }
 
-        setPageLimit((prev) => prev + 12);
+        setOffset((prev) => prev + 12);
     };
     
     useEffect(() => {

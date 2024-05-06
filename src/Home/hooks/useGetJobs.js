@@ -1,22 +1,22 @@
 import { useCallback, useEffect, useState } from "react"
 
-const useGetJobs = ({setIsLoading=()=>{}, pageLimit=10}) => {
+const useGetJobs = ({setIsLoading=()=>{}, offSet=0}) => {
   const [data, setData] = useState({});
 
   const myHeaders = new Headers();
 
   myHeaders.append("Content-Type", "application/json");
 
-  const body = JSON.stringify({limit: pageLimit, offset: 0});
+  const body = JSON.stringify({limit: 12, offset: offSet});
   
   const requestOptions = {method: "POST", headers: myHeaders, body};
 
   const getJobDetails = useCallback(async () => {
     try {
 			const response = await fetch("https://api.weekday.technology/adhoc/getSampleJdJSON", requestOptions);
-			const result = await response.text();
+			const result = await response.json();
 
-      setData(result);
+      setData((prev) => ({jdList: [...(prev?.jdList || []), ...result?.jdList]}));
       setIsLoading(false);
 
 			return result;
@@ -27,11 +27,11 @@ const useGetJobs = ({setIsLoading=()=>{}, pageLimit=10}) => {
 
 			return err;
 		}
-  }, [requestOptions, pageLimit])
+  }, [body])
 
   useEffect(() => {
     getJobDetails()
-  }, [getJobDetails, pageLimit])
+  }, [getJobDetails, body])
 
   return {data}
 }
