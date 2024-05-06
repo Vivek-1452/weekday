@@ -69,7 +69,7 @@ function Cards({setOffset=()=>{}, data={},isLoading=false}) {
 
 return (
     <div className={styles.cards_conatiner}>
-        {!!filteredList?.length && (filteredList || [])?.map((job_data, index) => {
+        {!!filteredList?.length ? (filteredList || [])?.map((job_data, index) => {
         const {companyName='', logoUrl='', jobRole='', 
             location='', salaryCurrencyCode='', minJdSalary=0, maxJdSalary=0, jobDetailsFromCompany='', minExp=0} = job_data || {};
 
@@ -127,7 +127,15 @@ return (
                 <button>⚡ Easy Apply</button>
             </div>
         </div>)
-        })}
+        }) : (
+            <div className={styles.no_data}>
+                <img width={200} src='https://jobs.weekday.works/_next/static/media/nothing-found.4d8f334c.png' alt=''/>
+
+                <span>
+                    Ouch! No Jobs available for this category at the moment
+                </span>
+            </div>
+        )}
     </div>
 )
 }
