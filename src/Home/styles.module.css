@@ -31,6 +31,14 @@
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
+
+        .details {
+            font-size: 12px;
+            font-weight: 600;
+            position: absolute;
+            right: 10px;
+            top: 0;
+        }
     }
 
     .btn_container {

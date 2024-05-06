@@ -40,6 +40,11 @@ function Home() {
 
                 {showFilters ? (
                     <div className={styles.filters_container}>
+
+                        <span className={styles.details}>
+                            Done by: vivekpaidi4519@gmail.com
+                        </span>
+
                         {filterOptions?.map((filters) => {
                             const {type} = filters || {};
                             const Component = COMPONENT_MAPPING[type] || Select;
